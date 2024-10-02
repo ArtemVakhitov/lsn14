@@ -69,7 +69,7 @@ resource "null_resource" "manage_inputs" {
 
   provisioner "local-exec" {
     command = <<-EOT
-		echo -e "instances = ${var.instances}\ncores = ${var.cores}\ngigabytes = ${var.gigabytes}" > vms.auto.tfvars
+		printf "instances = %s\ncores = %s\ngigabytes = %s\n" "${var.instances}" "${var.cores}" "${var.gigabytes}" > vms.auto.tfvars
 	EOT
     when = create
   }
