@@ -60,3 +60,24 @@ resource "yandex_compute_instance" "vm" {
   }
 
 }
+
+resource "null_resource" "manage_inputs" {
+
+  # Currently, Terraform asks for inputs at `destroy` and refuses to proceed if they don't match.
+  # A corresponding bug was filed on GitHub long ago which is still not fixed.
+  # This will handle writing and deleting the .auto.tfvars file so you can simply `terraform destroy`.
+
+  provisioner "local-exec" {
+    command = <<-EOT
+		echo -e "instances = ${var.instances}\ncores = ${var.cores}\ngigabytes = ${var.gigabytes}" > vms.auto.tfvars
+	EOT
+    when = create
+  }
+
+  provisioner "local-exec" {
+    command = "rm -f vms.auto.tfvars"
+    when = destroy
+  }
+
+  depends_on = [yandex_compute_instance.vm]
+}
