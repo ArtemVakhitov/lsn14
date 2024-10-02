@@ -14,19 +14,16 @@ provider "yandex" {
 variable "cores" {
   description = "Number of cores"
   type = number
-  default = 2
 }
 
 variable "gigabytes" {
   description = "RAM size in gigabytes"
   type = number
-  default = 2
 }
 
 variable "instances" {
   description = "Number of instances"
   type = number
-  default = 1
 }
 
 resource "yandex_compute_instance" "vm" {
