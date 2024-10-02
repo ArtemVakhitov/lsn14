@@ -23,9 +23,18 @@ variable "gigabytes" {
   default = 2
 }
 
-resource "yandex_compute_instance" "first" {
+variable "count" {
+  description = "Number of instances"
+  type = number
+  default = 1
+}
 
-  name = "first"
+resource "yandex_compute_instance" "vm" {
+
+  # Use `for_each` instead of `count` for better flexibility
+  for_each = toset([for i in range(var.count) : format("vm-%d", i + 1)])
+
+  name = each.value
 
   zone = "ru-central1-b"
   platform_id = "standard-v1"
