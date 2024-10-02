@@ -14,11 +14,13 @@ provider "yandex" {
 variable "cores" {
   description = "Number of cores"
   type = number
+  default = 2
 }
 
 variable "gigabytes" {
   description = "RAM size in gigabytes"
   type = number
+  default = 2
 }
 
 resource "yandex_compute_instance" "first" {
