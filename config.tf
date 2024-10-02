@@ -11,6 +11,16 @@ provider "yandex" {
   zone = "ru-central1-b"
 }
 
+variable "cores" {
+  description = "Number of cores"
+  type = number
+}
+
+variable "gigabytes" {
+  description = "RAM size in gigabytes"
+  type = number
+}
+
 resource "yandex_compute_instance" "first" {
 
   name = "first"
@@ -19,8 +29,8 @@ resource "yandex_compute_instance" "first" {
   platform_id = "standard-v1"
 
   resources {
-    cores  = 2
-    memory = 2
+    cores  = var.cores
+    memory = var.gigabytes
   }
 
   boot_disk {
