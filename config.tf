@@ -23,7 +23,7 @@ variable "gigabytes" {
   default = 2
 }
 
-variable "count" {
+variable "instances" {
   description = "Number of instances"
   type = number
   default = 1
@@ -32,7 +32,7 @@ variable "count" {
 resource "yandex_compute_instance" "vm" {
 
   # Use `for_each` instead of `count` for better flexibility
-  for_each = toset([for i in range(var.count) : format("vm-%d", i + 1)])
+  for_each = toset([for i in range(var.instances) : format("vm-%d", i + 1)])
 
   name = each.value
 
