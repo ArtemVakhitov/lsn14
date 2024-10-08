@@ -45,7 +45,7 @@ resource "yandex_compute_instance" "vm" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd8tvc3529h2cpjvpkr5"
+      image_id = "fd8i352834u7dsm7rfbv" # This is for 20.04; for 24.04, use fd8tvc3529h2cpjvpkr5
     }
   }
 
