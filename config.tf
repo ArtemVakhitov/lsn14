@@ -33,6 +33,8 @@ resource "yandex_compute_instance" "vm" {
 
   name = each.value
 
+  hostname = each.value
+
   zone = "ru-central1-b"
   platform_id = "standard-v1"
 
