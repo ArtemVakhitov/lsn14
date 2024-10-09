@@ -68,6 +68,7 @@ resource "null_resource" "manage_inputs" {
   # This will handle writing and deleting the .auto.tfvars file so you can simply `terraform destroy`.
 
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
     command = <<-EOT
 		printf "instances = %s\ncores = %s\ngigabytes = %s\n" "${var.instances}" "${var.cores}" "${var.gigabytes}" > vms.auto.tfvars
 	EOT
@@ -75,6 +76,7 @@ resource "null_resource" "manage_inputs" {
   }
 
   provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
     command = "rm -f vms.auto.tfvars"
     when = destroy
   }
