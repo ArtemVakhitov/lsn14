@@ -13,23 +13,22 @@ provider "yandex" {
 
 variable "cores" {
   description = "Number of cores"
-  type = number
+  type = list(number)
 }
 
 variable "gigabytes" {
   description = "RAM size in gigabytes"
-  type = number
+  type = list(number)
 }
 
-variable "instances" {
-  description = "Number of instances"
-  type = number
+locals {
+  Instances = min(length(var.cores), length(var.gigabytes))
 }
 
 resource "yandex_compute_instance" "vm" {
 
   # Use `for_each` instead of `count` for better flexibility
-  for_each = toset([for i in range(var.instances) : format("vm-%d", i + 1)])
+  for_each = zipmap(range(local.instances), [for i in range(local.instances) : format("vm-%d", i + 1)])
 
   name = each.value
 
@@ -39,8 +38,8 @@ resource "yandex_compute_instance" "vm" {
   platform_id = "standard-v1"
 
   resources {
-    cores  = var.cores
-    memory = var.gigabytes
+    cores  = var.cores[each.key]
+    memory = var.gigabytes[each.key]
   }
 
   boot_disk {
@@ -69,7 +68,7 @@ resource "null_resource" "manage_inputs" {
   provisioner "local-exec" {
     interpreter = ["bash", "-c"]
     command = <<-EOT
-		printf "instances = %s\ncores = %s\ngigabytes = %s\n" "${var.instances}" "${var.cores}" "${var.gigabytes}" > vms.auto.tfvars
+		printf "instances = %s\ncores = %s\ngigabytes = %s\n" "${local.instances}" "${var.cores}" "${var.gigabytes}" > vms.auto.tfvars
 	EOT
     when = create
   }
