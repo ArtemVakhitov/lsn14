@@ -25,8 +25,8 @@ locals {
   instances = min(length(var.cores), length(var.gigabytes))
   # For subsequent dumping to tfvars
   variable_definitions = join("\n", [
-    for k, v in var : 
-    "${k} = ${jsonencode(v)}"
+    "cores = ${jsonencode(var.cores)}",
+    "gigabytes = ${jsonencode(var.gigabytes)}"
   ])
 }
 
