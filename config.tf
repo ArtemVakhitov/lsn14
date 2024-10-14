@@ -22,7 +22,7 @@ variable "gigabytes" {
 }
 
 locals {
-  Instances = min(length(var.cores), length(var.gigabytes))
+  instances = min(length(var.cores), length(var.gigabytes))
 }
 
 resource "yandex_compute_instance" "vm" {
